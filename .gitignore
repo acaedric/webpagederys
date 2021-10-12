@@ -1,0 +1,6 @@
+# environment variables
+/.idea
+.env
+# node
+node_modules
+dist
