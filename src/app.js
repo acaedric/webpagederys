@@ -20,9 +20,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-app.use("/api/tasks", taskRoutes);
-app.use("/", taskRoutes2);
 
+app.use("/api/tasks", taskRoutes);
+app.use("/api/personas", taskRoutes2);
+
+
+app.use(cors());
+
+app.post("/probandoconsulta", function(req, res) {
+    console.log(req.body);
+    console.log(req.body.correpostulante)
+    if (!req.body.correopostulante) {
+        return res.status(400).send({ message: 'Content cannot be empty' + req.body.correopostulante })
+        res.redirect('/');
+      }
+    res.send({ status: 'SUCCESS' });
+  });
 
 //Static Files
 /* app.use("/css", express.static(path.join(__dirname, "node_modules/mdb-ui-kit/css")));

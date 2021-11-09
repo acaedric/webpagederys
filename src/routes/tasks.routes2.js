@@ -34,10 +34,16 @@ const upload = multer({
 
 
 
+
 router.get('/consultas', taskCtrl.findConsultas);
 router.post('/consultas', upload, taskCtrl.consulta);
-// router.post('/consultas', taskCtrl.consulta);
+router.post('/registropostulante', taskCtrl.crearPersona);
+router.post('/registropostulante2', taskCtrl.crearPostulante);
+router.get('/listadepersonas', taskCtrl.obtenerPersonas);
+router.post('/login', taskCtrl.iniciarsesion);
 
+
+// router.post('/probandoconsulta', taskCtrl.probandoconsulta);
 
 
 

@@ -70,7 +70,7 @@
                             <a class="nav-link" style="color:black !important" aria-current="page" href="#contactanos">CONTACTO</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" style="color:black !important" aria-current="page" href="#">REGISTRARSE</a>
+                            <a class="nav-link" style="color:black !important" aria-current="page" href="registropostulante.html">REGISTRARSE</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" style="color:black !important" aria-current="page" href="#">INICIAR SESIÓN</a>
@@ -107,7 +107,26 @@
         <!-- Navbar -->
         <main class="mt-5">
             <div class="container" id="contactanos">
-
+                <form action="/probandoconsulta" method="POST"
+                id="contactForm2" name="contact-form2" role="form" class="shake py-4"
+                enctype="multipart/form-data">
+                    <div class="row mb-0 d-flex justify-content-start">
+                        <p>Correo Electrónico</p>
+                    </div>
+                    <div class="form-outline mb-2 form-group label-floating">
+                        <input type="email" name="correopostulante" id="correopostulante" class="form-control" />
+                        <label class="form-label" for="form3Example6">usuario@ejemplo.com</label>
+                    </div>
+                    <!-- Submit button -->
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-2">
+                            <button type="submit" style="background-color: rgba(38, 168, 223, 1)" class="btn btn-primary btn-block mb-4">
+                                Enviar
+                            </button>
+                        </div>
+                        
+                    </div>
+                </form>
 
                 <!--Section: Content-->
                 <section class="mb-5">
