@@ -64,7 +64,7 @@ export const consulta = async (req, res) => {
     });
 
 
-    if (typeof req.file !== 'undefined'){
+    if (typeof req.file !== 'undefined') {
       let info = await transporter.sendMail({
         from: '"Grafimar Server" <tech@corporativagrafimar.com>', // sender address,
         // to: 'grafimarsac@hotmail.com',
@@ -86,18 +86,18 @@ export const consulta = async (req, res) => {
             filename: req.file.filename,
             path: direccion + '/' + req.file.filename // stream this file
           }]
-        
+
       })
 
       console.log('Message sent: %s', info.messageId);
 
       fs.unlink(direccion + '/' + req.file.filename)
-      .then(() => {
-        console.log('File removed')
-      }).catch(err => {
-        console.error('Something wrong happened removing the file', err)
-      })
-      
+        .then(() => {
+          console.log('File removed')
+        }).catch(err => {
+          console.error('Something wrong happened removing the file', err)
+        })
+
 
     } else {
       let info = await transporter.sendMail({
@@ -120,15 +120,15 @@ export const consulta = async (req, res) => {
 
       console.log('Message sent: %s', info.messageId);
     }
-    if (typeof req.file !== 'undefined'){
+    if (typeof req.file !== 'undefined') {
       console.log(req.file);
       console.log(req.file.filename);
     }
-    
 
-    
+
+
     res.redirect('/');
-    
+
   } catch (error) {
     res.status(500).json({
       message: error.message + req.body.nombreconsulta || 'Something goes wrong creating a task',
@@ -142,13 +142,13 @@ export const consulta = async (req, res) => {
 export const crearPersona = async (req, res) => {
 
   try {
-      const text = 'INSERT INTO persona (doc_id, apellidos, nombre_pila, foto, fec_nac, sexo, direcc_email, nombre_usuario, password, rol, pais, ciudad) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)'
-      const values = [req.body.doc_id, req.body.apellidos, req.body.nombre_pila, req.body.foto, req.body.fec_nac, req.body.sexo, req.body.direcc_email, req.body.nombre_usuario, req.body.password, req.body.rol, req.body.pais, req.body.ciudad]
-      const res = await pool.query(text, values)
+    const text = 'INSERT INTO persona (doc_id, apellidos, nombre_pila, foto, fec_nac, sexo, direcc_email, nombre_usuario, password, rol, pais, ciudad) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)'
+    const values = [req.body.doc_id, req.body.apellidos, req.body.nombre_pila, req.body.foto, req.body.fec_nac, req.body.sexo, req.body.direcc_email, req.body.nombre_usuario, req.body.password, req.body.rol, req.body.pais, req.body.ciudad]
+    const res = await pool.query(text, values)
 
   } catch (e) {
-      console.log(e);
-      res.status(500).send('Hubo un error');
+    console.log(e);
+    res.status(500).send('Hubo un error');
   }
 }
 
@@ -156,43 +156,82 @@ export const crearPostulante = async (req, res) => {
 
   try {
 
-      const text = 'INSERT INTO postulante (link_linkedin, lugar_residencia, antecedentes_penales, curriculum_vitae, situacion_laboral_actual, tipo_contrato_deseado, movilidad, doc_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)'
-      const values = [req.body.link_linkedin, req.body.lugar_residencia, '', req.body.curriculum_vitae, req.body.situacion_laboral_actual, req.body.tipo_contrato_deseado, req.body.movilidad, req.body.doc_id];
-      const res = await pool.query(text, values)
+    const text = 'INSERT INTO postulante (link_linkedin, lugar_residencia, antecedentes_penales, curriculum_vitae, situacion_laboral_actual, tipo_contrato_deseado, movilidad, doc_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)'
+    const values = [req.body.link_linkedin, req.body.lugar_residencia, '', req.body.curriculum_vitae, req.body.situacion_laboral_actual, req.body.tipo_contrato_deseado, req.body.movilidad, req.body.doc_id];
+    const res = await pool.query(text, values)
 
   } catch (e) {
-      console.log(e);
-      res.status(500).send('Hubo un error');
+    console.log(e);
+    res.status(500).send('Hubo un error XD');
   }
 }
 
 export const obtenerPersonas = async (req, res) => {
   try {
-      const respuesta = await pool.query('select * from persona');
-      console.log(respuesta.rows[0]);
-      const {doc_id, apellidos, nombre_pila, foto, fec_nac, sexo, direcc_email, nombre_usuario, password, rol, pais, ciudad} = respuesta.rows[0];
-      const personas = {doc_id, apellidos, nombre_pila, foto, fec_nac, sexo, direcc_email, nombre_usuario, password, rol, pais, ciudad};
-      
-      res.status(200).json(respuesta.rows);
-  } catch(e) {
-      console.log(e);
-      res.status(500).send('Hubo un error');
+    const respuesta = await pool.query('select * from persona');
+    console.log(respuesta.rows[0]);
+    const { doc_id, apellidos, nombre_pila, foto, fec_nac, sexo, direcc_email, nombre_usuario, password, rol, pais, ciudad } = respuesta.rows[0];
+    const personas = { doc_id, apellidos, nombre_pila, foto, fec_nac, sexo, direcc_email, nombre_usuario, password, rol, pais, ciudad };
+
+    res.status(200).json(respuesta.rows);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send('Hubo un error');
+  }
+};
+
+export const obtenerPersonasbyID = async (req, res) => {
+  try {
+    console.log(req.params);
+    console.log(req.params.id);
+    console.log(typeof (req.params.id));
+    const value1 = [req.params.id];
+    const text = 'select * from postulante pt INNER JOIN persona p ON p.doc_id = pt.doc_id AND p.nombre_usuario = $1';
+    const datospostulante = await pool.query(text, value1)
+    console.log(datospostulante.rows[0]);
+
+
+     res.status(200).json(datospostulante.rows[0]);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send('Hubo un error');
   }
 };
 
 export const iniciarsesion = async (req, res) => {
   try {
     const value1 = [req.body.nombre_usuario];
-    console.log(req.body.nombre_usuario);
-    console.log(req.body.nombre_usuario);
     const text = 'select * from persona where nombre_usuario = $1';
     const datosusuario = await pool.query(text, value1)
-    if (datosusuario.rows.length === 0) return res.status(401).json({error:"Usuario no registrado"});
+    if (datosusuario.rows.length === 0) return res.status(401).json({ error: "Usuario no registrado" });
     console.log(datosusuario);
     // const validPassword = await bcrypt.compare(req.body.password, datosusuario.rows[0].password);
-    if (req.body.password != datosusuario.rows[0].password) return res.status(401).json({error: "Contraseña incorrecta"});
+    if (req.body.password != datosusuario.rows[0].password) return res.status(401).json({ error: "Contraseña incorrecta" });
   } catch (e) {
     console.log(e);
     res.status(500).send('Hubo un error');
   }
 };
+
+/*     const postulante2 = {link_linkedin: 'asdwd',
+      lugar_residencia: 'asdwd',
+      antecedentes_penales: 'asdwd',
+      curriculum_vitae: 'asdwd',
+      situacion_laboral_actual: 'asdwd',
+      tipo_contrato_deseado: 'asdwd',
+      movilidad: 'asdwd',
+      doc_id_postulante: '15641561',
+      doc_id_empleador: '',
+      doc_id: '15641561',
+      apellidos:'guiter', 
+      nombre_pila:'caser', 
+      foto:'asdwds', 
+      fec_nac: '28/11/1999',
+      sexo: 'M', 
+      direcc_email: 'sdwdas',
+      nombre_usuario: 'nombreprueba',
+      password: 'sdwdas',
+      rol: 'sdwdas',
+      pais: 'sdwdas',
+      ciudad: 'sdwdas'};
+    console.log(postulante2); */

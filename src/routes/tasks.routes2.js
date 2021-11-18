@@ -40,6 +40,7 @@ router.post('/consultas', upload, taskCtrl.consulta);
 router.post('/registropostulante', taskCtrl.crearPersona);
 router.post('/registropostulante2', taskCtrl.crearPostulante);
 router.get('/listadepersonas', taskCtrl.obtenerPersonas);
+router.get('/profile/:id', taskCtrl.obtenerPersonasbyID);
 router.post('/login', taskCtrl.iniciarsesion);
 
 
