@@ -180,6 +180,30 @@ export const obtenerPersonas = async (req, res) => {
   }
 };
 
+export const obtenerConvocatorias = async (req, res) => {
+  try {
+    const respuesta = await pool.query('select * from convocatoria');
+
+    res.status(200).json(respuesta.rows);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send('Hubo un error');
+  }
+};
+
+export const obtenerConvocatoriasPostulantebyID = async (req, res) => {
+  try {
+    const value1 = [req.params.id];
+    const text = 'select * from convocatoria pt INNER JOIN persona p ON p.doc_id = pt.doc_id AND p.nombre_usuario = $1';
+    const datosconvocatoria = await pool.query(text, value1)
+    const respuesta = await pool.query('select * from convocatoria');
+    res.status(200).json(datosconvocatoria.rows[0]);
+  } catch (e) {
+    console.log(e);
+    res.status(500).send('Hubo un error');
+  }
+};
+
 export const obtenerPersonasbyID = async (req, res) => {
   try {
     console.log(req.params);
@@ -189,9 +213,13 @@ export const obtenerPersonasbyID = async (req, res) => {
     const text = 'select * from postulante pt INNER JOIN persona p ON p.doc_id = pt.doc_id AND p.nombre_usuario = $1';
     const datospostulante = await pool.query(text, value1)
     console.log(datospostulante.rows[0]);
-
-
-     res.status(200).json(datospostulante.rows[0]);
+    if (datospostulante.rows.length === 0) {
+      const text2 = 'select * from tecnico_seleccion pt INNER JOIN persona p ON p.doc_id = pt.doc_id AND p.nombre_usuario = $1';
+      const datostecnicoseleccion = await pool.query(text2, value1)
+      res.status(200).json(datostecnicoseleccion.rows[0]);
+    } {
+      res.status(200).json(datospostulante.rows[0]);
+    }
   } catch (e) {
     console.log(e);
     res.status(500).send('Hubo un error');
@@ -207,6 +235,7 @@ export const iniciarsesion = async (req, res) => {
     console.log(datosusuario);
     // const validPassword = await bcrypt.compare(req.body.password, datosusuario.rows[0].password);
     if (req.body.password != datosusuario.rows[0].password) return res.status(401).json({ error: "Contraseña incorrecta" });
+    res.status(200).json(datosusuario.rows[0]);
   } catch (e) {
     console.log(e);
     res.status(500).send('Hubo un error');

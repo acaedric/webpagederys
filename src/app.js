@@ -5,6 +5,7 @@ import path from "path";
 import mongoose from 'mongoose';
 import taskRoutes from "./routes/tasks.routes";
 import taskRoutes2 from "./routes/tasks.routes2";
+import taskRoutes3 from "./routes/tasks.routes3";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/tasks", taskRoutes);
 app.use("/api/personas", taskRoutes2);
+app.use("/api/convocatorias", taskRoutes3);
 
 
 app.use(cors());
