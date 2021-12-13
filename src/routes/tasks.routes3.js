@@ -5,5 +5,6 @@ const router = Router();
 
 
 router.get('/listadeconvocatorias', taskCtrl.obtenerConvocatorias);
+router.get('/personasdeseleccion', taskCtrl.seleccionPostulantebyID);
 
 export default router;

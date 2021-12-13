@@ -1,13 +1,13 @@
 import mongoose from 'mongoose'
 import config from './config'
-(async () => {
+(async() => {
     try {
         const db = await mongoose.connect(config.mongodbURL, {
             useNewUrlParser: true,
-            useUnifiedTopology:true,
+            useUnifiedTopology: true,
             useFindAndModify: false
         });
-        console.log('Database is connected to:',db.connection.name);
+        console.log('Database is connected to:', db.connection.name);
     } catch (error) {
         console.error(error);
     }
@@ -18,7 +18,7 @@ const { Pool } = require('pg');
 const config2 = {
     user: 'postgres',
     host: 'localhost',
-    password: '20111136b',
+    password: 'mendoza',
     database: 'prueba'
 
 };
@@ -30,7 +30,7 @@ const poolConfig = process.env.DATABASE_URL ? {
     ssl: {
         rejectUnauthorized: false
     }
-    } : config2;
+} : config2;
 const pool = new Pool(poolConfig);
 console.log('PostgreSQL database is connected');
 export default pool;
