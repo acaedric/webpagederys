@@ -35,7 +35,6 @@ export const findConsultas = async(req, res) => {
 export const consulta = async(req, res) => {
     if (!req.body.nombreconsulta) {
         return res.status(400).send({ message: 'Content cannot be empty' + req.body.nombreconsulta })
-        res.redirect('/');
     }
     try {
         const newTask = new Task2({
@@ -64,11 +63,9 @@ export const consulta = async(req, res) => {
 
         if (typeof req.file !== 'undefined') {
             let info = await transporter.sendMail({
-                from: '"Grafimar Server" <tech@corporativagrafimar.com>', // sender address,
-                // to: 'grafimarsac@hotmail.com',
-                to: 'acaedricnewyt@gmail.com',
+                from: '"4DATA Server" <acaedric@gmail.com>', 
+                to: req.body.correoconsulta,
                 subject: 'Contacto Via Web',
-                // text: 'Hello World'
                 html: `
             <h1>Información de usuario</h1>
             <ul>
@@ -98,9 +95,9 @@ export const consulta = async(req, res) => {
 
         } else {
             let info = await transporter.sendMail({
-                from: '"Grafimar Server" <tech@corporativagrafimar.com>', // sender address,
+                from: '"4DATA Server" <acaedric@gmail.com>', // sender address,
                 // to: 'grafimarsac@hotmail.com',
-                to: 'acaedricnewyt@gmail.com',
+                to: req.body.correoconsulta,
                 subject: 'Contacto Via Web',
                 // text: 'Hello World'
                 html: `
@@ -121,10 +118,6 @@ export const consulta = async(req, res) => {
             console.log(req.file);
             console.log(req.file.filename);
         }
-
-
-
-        res.redirect('/');
 
     } catch (error) {
         res.status(500).json({
